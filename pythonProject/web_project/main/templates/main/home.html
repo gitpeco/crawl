@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页</title>
+</head>
+<body>
+    <h1>欢迎 {{ user.username }}</h1>
+    {% if user.is_staff %}
+        <a href="/admin/" target="_blank">管理后台</a>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="query" placeholder="输入搜索内容">
+        <button type="submit">搜索</button>
+    </form>
+
+    {% if results %}
+        <h2>搜索结果：</h2>
+        <ul>
+        {% for result in results %}
+            <li>
+                <h3>{{ result.title }}</h3>
+                <p>{{ result.content }}</p>
+                <a href="{{ result.url }}" target="_blank">查看详情</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
