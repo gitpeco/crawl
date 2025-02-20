@@ -4,19 +4,21 @@ from bs4 import BeautifulSoup
 
 
 def run_crawler(query):
-    # 示例爬虫（以百度搜索为例）
+    if not query:
+        return []
+
     headers = {'User-Agent': 'Mozilla/5.0'}
-    url = f'https://www.baidu.com/s?wd={query}'
+    url = f'https://www.example.com/search?q={query}'  # 替换为其他搜索引擎的 URL
 
     try:
         response = requests.get(url, headers=headers)
         soup = BeautifulSoup(response.text, 'html.parser')
         results = []
 
-        for item in soup.select('.result'):
+        for item in soup.select('.result'):  # 根据目标网站的 HTML 结构调整选择器
             title = item.select_one('h3').text.strip()
             link = item.select_one('a')['href']
-            content = item.select_one('.c-abstract').text.strip()
+            content = item.select_one('.content').text.strip()
             results.append({
                 'title': title,
                 'url': link,

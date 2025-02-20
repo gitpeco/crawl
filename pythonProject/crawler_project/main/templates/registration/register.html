@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="query" placeholder="Search...">
+        <button type="submit">Submit</button>
+    </form>
+
+    {% for result in results %}
+    <div>
+        <h3>{{ result.title }}</h3>
+        <p>{{ result.content }}</p>
+        <a href="{{ result.url }}">Link</a>
+    </div>
+    {% empty %}
+    <p>No results found.</p>
+    {% endfor %}
+</body>
+</html>
