@@ -1,24 +1,18 @@
+<!-- templates/registration/register.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Search</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
 </head>
 <body>
+    <h1>Register</h1>
     <form method="post">
         {% csrf_token %}
-        <input type="text" name="query" placeholder="Search...">
-        <button type="submit">Submit</button>
+        {{ form.as_p }}
+        <button type="submit">Register</button>
     </form>
-
-    {% for result in results %}
-    <div>
-        <h3>{{ result.title }}</h3>
-        <p>{{ result.content }}</p>
-        <a href="{{ result.url }}">Link</a>
-    </div>
-    {% empty %}
-    <p>No results found.</p>
-    {% endfor %}
+    <p>Already have an account? <a href="{% url 'login' %}">Login Now</a></p>
 </body>
 </html>
