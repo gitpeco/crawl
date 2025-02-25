@@ -1,9 +1,10 @@
 # main/views.py
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
 from .crawler import run_crawler
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import User
 
 @login_required
 def home(request):
@@ -29,3 +30,23 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
+
+
+
+@login_required
+@user_passes_test(lambda user: user.is_superuser)
+def manage_users(request):
+    users = User.objects.all()
+    return render(request, 'admin/manage_users.html', {'users': users})
+
+# main/views.py
+@login_required
+@user_passes_test(lambda user: user.is_superuser)
+def edit_user(request, user_id):
+    user = User.objects.get(id=user_id)
+    if request.method == 'POST':
+        user.is_active = request.POST.get('is_active', False)
+        user.is_staff = request.POST.get('is_staff', False)
+        user.save()
+        return redirect('manage_users')
+    return render(request, 'admin/edit_user.html', {'user': user})
