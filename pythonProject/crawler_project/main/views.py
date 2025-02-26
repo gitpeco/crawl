@@ -50,3 +50,25 @@ def edit_user(request, user_id):
         user.save()
         return redirect('manage_users')
     return render(request, 'admin/edit_user.html', {'user': user})
+
+# crawler_project/views.py
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import User
+
+@login_required
+@user_passes_test(lambda user: user.is_superuser)
+def manage_users(request):
+    users = User.objects.all()
+    return render(request, 'admin/manage_users.html', {'users': users})
+
+@login_required
+@user_passes_test(lambda user: user.is_superuser)
+def edit_user(request, user_id):
+    user = User.objects.get(id=user_id)
+    if request.method == 'POST':
+        user.is_active = request.POST.get('is_active', False)
+        user.is_staff = request.POST.get('is_staff', False)
+        user.save()
+        return redirect('manage_users')
+    return render(request, 'admin/edit_user.html', {'user': user})
