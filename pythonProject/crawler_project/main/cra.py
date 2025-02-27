@@ -1,4 +1,7 @@
-# main/crawler.py
+# -*- coding: utf-8 -*-
+
+# main/cra.py
+
 import json
 import time
 from pprint import pprint
